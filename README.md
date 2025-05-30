@@ -30,7 +30,7 @@ A comprehensive tool for generating professional development reports by analyzin
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/pepefeliblu/FreelancePay
    cd FreelancePay
    ```
 
