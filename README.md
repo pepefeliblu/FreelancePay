@@ -1,255 +1,259 @@
-# FreelancePay - Professional Development Report Generator
+# FreelancePay - Professional Development Reports
 
-A sophisticated enterprise-grade report generator that creates stakeholder-focused development reports for freelance developers, emphasizing business value and professional time tracking with multi-repository support.
+A comprehensive tool for generating professional development reports by analyzing JIRA tasks and Git commits. Perfect for freelancers, contractors, and development teams who need to create detailed, visually appealing reports for stakeholders.
 
-## 🚀 Key Features
+## ✨ Features
 
-### Multi-Repository Development Intelligence
-- **Full-Stack Analysis**: Analyze commits across multiple repositories (frontend, backend, libraries)
-- **Cross-Repository Insights**: Understand development patterns across your entire tech stack
-- **Repository Distribution**: See time and effort allocation across different codebases
-- **Complete Development Picture**: No more partial reporting from single-repo analysis
+### 📊 Professional Visualizations
+- **Business Impact Charts**: Interactive pie charts and bar graphs showing time investment by category
+- **Performance Dashboards**: KPI indicators, completion rates, and velocity metrics
+- **Development Trends**: Weekly progress tracking and velocity analysis
+- **Repository Activity**: Multi-repository commit and time distribution analysis
+- **Priority Distribution**: Task priority breakdown with visual indicators
 
-### Professional Time Tracking
-- **JIRA Time Integration**: Prioritizes actual logged time in JIRA (most accurate)
-- **Realistic Estimation**: Accounts for full development lifecycle (planning, testing, debugging, code review, deployment)
-- **Enhanced Multipliers**: Complexity and priority-based time adjustments
-- **Professional Minimums**: Anti-exploitation features with realistic task minimums (2-8 hours)
-- **Time Source Transparency**: Shows exactly where time estimates come from
+### 📄 Multiple Export Formats
+- **Markdown**: Standard text format for developers
+- **DOCX**: Professional Word documents with embedded charts
+- **PDF**: Publication-ready reports with styling and graphics
+- **All Formats**: Generate complete report package in one command
 
-### Business Value Analysis
-- **6 Business Impact Categories**: Revenue & Sales, User Experience, Security & Compliance, Operational Efficiency, Platform Stability, Feature Expansion
-- **Technical-to-Business Translation**: Converts technical jargon into business value language
-- **Stakeholder-Ready Reports**: Executive summaries, strategic insights, forward-looking recommendations
-- **Multiple Report Types**: Technical, stakeholder, or combined reports
+### 🎯 Stakeholder-Ready Reports
+- Executive summaries with business impact analysis
+- Strategic development metrics and ROI insights
+- Multi-repository contribution tracking
+- AI-powered business insights (OpenAI/Gemini integration)
+- Professional styling and corporate-ready layouts
 
-### AI-Powered Intelligence
-- **Multi-Provider Support**: Google Gemini (primary) + OpenAI (fallback) + template-based (no AI required)
-- **Smart Fallbacks**: Graceful degradation when APIs are unavailable
-- **Auto-Detection**: Automatically detects and uses available Gemini models
-- **Professional Summaries**: Context-aware business summaries
+## 🚀 Quick Start
 
-### Enterprise Code Quality
-- **SonarLint Compliant**: Meets all enterprise code quality standards
-- **Low Cognitive Complexity**: Well-structured, maintainable codebase
-- **Modular Architecture**: Easy to extend and customize
-- **Professional Standards**: Production-ready code quality
+### Installation
 
-## 📋 Prerequisites
-
-1. **Required Environment Variables**:
+1. **Clone the repository**
    ```bash
-   JIRA_URL=https://your-domain.atlassian.net
-   JIRA_USERNAME=your.email@company.com
-   JIRA_API_TOKEN=your_jira_api_token
+   git clone <repository-url>
+   cd FreelancePay
    ```
 
-2. **Optional AI Enhancement**:
-   ```bash
-   GEMINI_API_KEY=your_gemini_api_key  # Recommended (generous free tier)
-   OPENAI_API_KEY=your_openai_api_key  # Fallback option
-   ```
-
-3. **Python Dependencies**:
+2. **Install dependencies**
    ```bash
    pip install -r requirements.txt
    ```
 
-## 🔧 Installation
+3. **Set up environment variables**
+   ```bash
+   cp env.example .env
+   # Edit .env with your credentials
+   ```
 
-1. Clone the repository
-2. Install dependencies: `pip install -r requirements.txt`
-3. Create a `.env` file with your credentials
-4. Run the generator
+### Basic Usage
 
-## 💼 Usage
-
-### Single Repository Analysis
+**Generate a comprehensive professional report package:**
 ```bash
 python main.py \
   --assignee "your.email@company.com" \
-  --start-date "2025-04-01" \
-  --end-date "2025-04-30" \
-  --repos "/path/to/your/git/repo" \
-  --output "stakeholder_report_april_2025.md"
+  --start-date "2024-01-01" \
+  --end-date "2024-01-31" \
+  --repos "/path/to/repo1,/path/to/repo2" \
+  --format all \
+  --charts
 ```
 
-### Multi-Repository Full-Stack Analysis (Recommended)
+**Generate stakeholder report with charts in PDF:**
 ```bash
 python main.py \
-  --assignee "your.email@company.com" \
-  --start-date "2025-04-01" \
-  --end-date "2025-04-30" \
-  --repos "/path/to/frontend,/path/to/backend,/path/to/shared-library" \
-  --output "full_stack_report_april_2025.md"
+  --assignee "developer@company.com" \
+  --start-date "2024-01-01" \
+  --end-date "2024-01-31" \
+  --repos "/path/to/repository" \
+  --format pdf \
+  --charts \
+  --report-type stakeholder
 ```
 
-### Technical Report
+**Generate technical report with visualizations:**
 ```bash
 python main.py \
-  --assignee "your.email@company.com" \
-  --start-date "2025-04-01" \
-  --end-date "2025-04-30" \
-  --repos "/path/to/your/repos" \
-  --output "technical_report_april_2025.md" \
+  --assignee "dev.team@company.com" \
+  --start-date "2024-01-01" \
+  --end-date "2024-01-31" \
+  --repos "/path/to/repo" \
+  --format docx \
+  --charts \
   --report-type technical
 ```
 
-### Combined Report (Both)
+## 📈 Report Types & Visualizations
+
+### Stakeholder Reports
+Perfect for project managers, tech leads, and business stakeholders:
+
+- **Executive Summary**: High-level business impact and metrics
+- **Business Impact Analysis**: Categorized by Revenue, UX, Security, etc.
+- **Strategic Development Metrics**: Velocity, complexity, and ROI analysis
+- **Success Metrics Dashboard**: KPIs, completion rates, and performance indicators
+- **Professional Charts**: 
+  - Business impact distribution (pie charts)
+  - Development velocity trends (line graphs)
+  - Repository activity analysis (bar charts)
+  - Performance dashboard (gauges and indicators)
+
+### Technical Reports
+Detailed for development teams and technical audiences:
+
+- **Detailed Task Breakdown**: Individual task analysis with commits
+- **Repository Context**: Multi-repo contribution tracking
+- **Time Tracking Analysis**: JIRA time vs. estimated time comparison
+- **Sprint Integration**: Sprint-aware reporting and planning insights
+
+## 🎨 Chart Types Generated
+
+### 1. Business Impact Analysis
+- **Time Investment Pie Chart**: Shows hours spent by business category
+- **Task Completion Bar Chart**: Compares total vs completed tasks by category
+- **Color-coded by Category**: Revenue (Blue), UX (Purple), Security (Orange), etc.
+
+### 2. Performance Dashboard
+- **Completion Rate Gauge**: Visual indicator of project completion percentage
+- **Total Hours Indicator**: Summary metric with delta comparison
+- **Weekly Progress Lines**: Planned vs actual progress tracking
+- **Task Status Distribution**: Pie chart of completed vs in-progress tasks
+
+### 3. Development Velocity Trends
+- **Hours per Week**: Line chart showing development intensity over time
+- **Tasks per Week**: Completion velocity tracking
+- **Trend Analysis**: Visual patterns in development pace
+
+### 4. Repository Activity
+- **Commits per Repository**: Bar chart showing contribution distribution
+- **Hours per Repository**: Time investment across multiple codebases
+- **Multi-repo Context**: Understanding of full-stack development scope
+
+### 5. Priority Distribution
+- **Task Priority Breakdown**: Bar chart of High/Medium/Low priority tasks
+- **Color-coded Priorities**: Visual priority assessment
+- **Resource Allocation Insights**: Understanding of priority focus
+
+## 🔧 Command Line Options
+
 ```bash
-python main.py \
-  --assignee "your.email@company.com" \
-  --start-date "2025-04-01" \
-  --end-date "2025-04-30" \
-  --repos "/path/to/frontend,/path/to/backend" \
-  --output "full_report_april_2025.md" \
-  --report-type both
+python main.py [OPTIONS]
+
+Required:
+  --assignee EMAIL          JIRA assignee email/username
+  --start-date YYYY-MM-DD   Report start date
+  --end-date YYYY-MM-DD     Report end date  
+  --repos PATHS             Comma-separated repository paths
+
+Optional:
+  --output FILE             Output file path
+  --report-type TYPE        Report type: technical|stakeholder|both (default: stakeholder)
+  --format FORMAT           Output format: markdown|text|docx|pdf|all (default: markdown)
+  --charts                  Generate professional charts and visualizations
 ```
 
-## 📊 Report Types
+## 📊 Professional Features
 
-### Stakeholder Report (Default)
-- **Executive Summary**: High-level business impact overview
-- **Repository Context**: Multi-repository development analysis
-- **Sprint Context**: Sprint-aware progress tracking
-- **Business Impact Categories**: Work organized by business value
-- **Success Metrics**: Professional achievement tracking
-- **Strategic Recommendations**: Sprint-aware development guidance
-- **Development Pipeline**: Future work prioritization
+### Chart Styling
+- **Corporate Color Palette**: Professional blue, purple, orange color scheme
+- **High-Resolution Export**: 2x scale factor for crisp presentation graphics
+- **Responsive Design**: Charts optimized for both digital and print media
+- **Brand Consistency**: Consistent styling across all visualization types
 
-### Technical Report
-- **Task Details**: Complete technical breakdown
-- **Multi-Repository Commit History**: Git activity analysis across all repos
-- **Time Estimation**: Detailed time tracking methodology
-- **AI-Generated Summary**: Technical work overview
+### Document Formatting
+- **DOCX Features**:
+  - Professional document structure with proper headings
+  - Embedded high-resolution charts
+  - Styled bullet points and formatting
+  - Corporate-ready layout
+  
+- **PDF Features**:
+  - Publication-quality typography
+  - Embedded charts as base64 images
+  - Professional CSS styling
+  - Print-optimized layout
 
-## ⚙️ Configuration Options
+### Business Intelligence
+- **Automated Categorization**: AI-powered business impact classification
+- **ROI Analysis**: Time investment vs business value correlation
+- **Strategic Insights**: Pattern recognition in development activities
+- **Stakeholder Language**: Business-friendly terminology and metrics
 
-- `--repos`: **Required** - Comma-separated paths to Git repositories
-- `--assignee`: **Required** - Your JIRA username/email
-- `--start-date` / `--end-date`: **Required** - Report period (YYYY-MM-DD format)
-- `--report-type`: `stakeholder` (default), `technical`, or `both`
-- `--format`: `markdown` (default) or `text`
-- `--output`: Output file path (optional, prints to console if not specified)
+## 🛠 Configuration
 
-## 🧠 Time Estimation Intelligence
+### Environment Variables (.env)
+```bash
+# Required
+JIRA_URL=https://yourcompany.atlassian.net
+JIRA_USERNAME=your.email@company.com
+JIRA_API_TOKEN=your_api_token
 
-### Priority Hierarchy
-1. **JIRA Logged Time** (timespent, aggregatetimespent) - Most accurate
-2. **JIRA Original Estimates** (timeoriginalestimate) - Project planning estimates
-3. **Enhanced Git Analysis** - Realistic development lifecycle estimation
-
-### Realistic Multipliers
-- **Base Multiplier**: 2.5x for planning, testing, debugging, code review, deployment
-- **Complexity Multipliers**: 1.0x-1.8x based on task characteristics
-- **Priority Multipliers**: 1.0x-1.3x for high-priority coordination overhead
-- **Minimum Times**: 2-8 hours based on task type (prevents exploitation)
-
-### Professional Context
-- **Daily Averaging**: 3.6 hours/day across 22 working days
-- **Full Lifecycle**: Includes research, analysis, implementation, testing, deployment
-- **Realistic Expectations**: Industry-standard development practices
-
-## 🎯 Business Value Categories
-
-1. **Revenue & Sales**: Discount systems, cart functionality, payment processing
-2. **User Experience**: Login systems, UI/UX improvements, themes
-3. **Security & Compliance**: Authentication, validation, access controls
-4. **Operational Efficiency**: Admin tools, automation, workflow improvements
-5. **Platform Stability**: Bug fixes, performance optimization, error handling
-6. **Feature Expansion**: New capabilities, platform enhancements
-
-## 🏢 Multi-Repository Intelligence
-
-### Repository Distribution Analysis
-- **Commit Distribution**: See development effort across repositories
-- **Time Allocation**: Understand where development time is invested
-- **Cross-Repository Insights**: Identify full-stack development patterns
-- **Repository Context**: Professional reporting with repository-specific metrics
-
-### Full-Stack Development Tracking
-- **Frontend Development**: UI/UX work, client-side features
-- **Backend Development**: API development, server-side logic
-- **Shared Libraries**: Reusable components and utilities
-- **Database Work**: Schema changes, migrations, data work
-
-## 📈 Professional Benefits
-
-### For Developers
-- **Complete Picture**: Multi-repository analysis shows full development scope
-- **Value Communication**: Translate technical work into business impact
-- **Fair Compensation**: Realistic time tracking prevents undervaluation
-- **Professional Positioning**: Stakeholder-ready reports demonstrate business value
-- **Time Transparency**: Clear methodology builds trust
-
-### For Stakeholders
-- **Business Focus**: Understand development impact on business goals
-- **Full-Stack Visibility**: See complete development effort across all systems
-- **ROI Visibility**: See investment results in business terms
-- **Strategic Planning**: Informed decisions about development priorities
-- **Progress Tracking**: Clear metrics and achievements
-
-## 🛡️ Anti-Exploitation Features
-
-- **Minimum Task Times**: 2-8 hours based on complexity
-- **Realistic Multipliers**: Accounts for full development process
-- **Professional Standards**: Industry-appropriate time expectations
-- **Transparent Methodology**: Clear time source hierarchy
-
-## 🔄 AI Fallback System
-
-1. **Gemini AI** (Primary) - Generous free tier, latest models
-2. **OpenAI** (Fallback) - Industry standard GPT models
-3. **Template-based** (No AI) - Professional reports without AI dependency
-
-## 📝 Example Multi-Repository Output
-
-```
-# DEVELOPMENT IMPACT REPORT
-**Developer**: Juan Rueda
-**Report Period**: April 2025
-**Generated**: 2025-04-15 14:30:00
-
-## REPOSITORY CONTEXT
-• **stickerstoke-app**: 26 commits, 15 tasks, 37.8h (48.1% of total commits)
-• **stickerstoke-api**: 21 commits, 12 tasks, 31.2h (38.9% of total commits)
-• **standard-library**: 7 commits, 8 tasks, 10.4h (13.0% of total commits)
-
-## EXECUTIVE SUMMARY - JUAN RUEDA'S CONTRIBUTIONS
-**Development Focus**: 24 strategic initiatives completed with 160.7 hours of development investment.
-**Full-Stack Development**: 54 commits across 3 repositories demonstrating comprehensive system knowledge.
-**Development Intensity**: 7.3 hours/day sustained development pace across 22 working days.
-
-## KEY BUSINESS IMPACT AREAS - JUAN RUEDA
-• **User Experience**: 8 tasks completed - 48.2h development time
-• **Platform Stability**: 6 tasks completed - 42.8h development time
-• **Feature Expansion**: 5 tasks completed - 38.6h development time
-• **Security & Compliance**: 3 tasks completed - 21.1h development time
-• **Operational Efficiency**: 2 tasks completed - 10.0h development time
-
-## SUCCESS METRICS & PERFORMANCE
-• **Strategic Development**: 24 complex initiatives averaging 6.7h each
-• **Development Velocity**: 7.3 hours/day sustained pace over 22 working days
-• **Technical Scope**: Full-stack development across 3 repositories
-• **Primary Focus**: 26 commits in stickerstoke-app (37.8h)
+# Optional (for AI summaries)
+OPENAI_API_KEY=your_openai_key
+GEMINI_API_KEY=your_gemini_key
 ```
 
-## 🏆 Code Quality & Enterprise Standards
+### Dependencies
+The tool automatically handles missing dependencies:
+- **Core Features**: JIRA integration, Git analysis, basic reporting
+- **Advanced Features**: Chart generation, DOCX/PDF export require additional packages
+- **Graceful Degradation**: Falls back to markdown if advanced packages unavailable
 
-- **SonarLint Compliant**: All cognitive complexity and code quality issues resolved
-- **Maintainable Functions**: All functions under 15 cognitive complexity
-- **Modular Design**: Well-structured, focused functions
-- **Professional Standards**: Enterprise-ready codebase
-- **Extensible Architecture**: Easy to add new features and integrations
+## 📈 Sample Output
+
+### Generated Files
+When using `--format all`, you'll get:
+```
+reports/
+├── john_doe_20240131_143022.docx    # Professional Word document
+├── john_doe_20240131_143022.pdf     # Publication-ready PDF
+├── john_doe_20240131_143022.md      # Markdown source
+└── charts/
+    ├── business_impact.png          # Business category analysis
+    ├── performance_dashboard.png    # KPI dashboard
+    ├── velocity_trends.png          # Development velocity
+    ├── repository_activity.png     # Multi-repo analysis
+    └── priority_distribution.png   # Task priority breakdown
+```
+
+### Professional Report Sections
+1. **Executive Summary** - High-level business impact
+2. **Strategic Analysis** - AI-powered insights
+3. **Business Impact Areas** - Categorized achievements
+4. **Performance Metrics** - KPIs and success indicators
+5. **Visual Analytics** - Professional charts and graphs
+6. **Strategic Recommendations** - Future planning insights
+
+## 🎯 Use Cases
+
+### For Freelancers
+- Client-ready professional reports
+- Visual proof of business impact
+- Time tracking with business value correlation
+- Multiple format support for different client preferences
+
+### For Development Teams
+- Sprint retrospectives with visual analytics
+- Stakeholder communication with business language
+- Multi-repository contribution tracking
+- Performance trend analysis
+
+### For Project Managers
+- Executive dashboard creation
+- Resource allocation insights
+- ROI analysis and business case building
+- Professional presentation materials
 
 ## 🤝 Contributing
 
-This tool is designed for professional freelance developers. Contributions that enhance business value communication, multi-repository analysis, and realistic time tracking are welcome.
+1. Fork the repository
+2. Create a feature branch
+3. Add tests for new chart types or export formats
+4. Submit a pull request
 
 ## 📄 License
 
-MIT License - See LICENSE file for details.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 ---
 
-**Transform your technical work into stakeholder value. Capture your complete full-stack development effort. Ensure fair compensation. Build professional relationships.**
+**FreelancePay** - Transform your development work into professional, stakeholder-ready reports with comprehensive analytics and beautiful visualizations.

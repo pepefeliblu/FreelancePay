@@ -1,0 +1,27 @@
+# Existing dependencies
+jira
+GitPython
+python-dotenv
+openai
+google-generativeai
+
+# New dependencies for professional reporting
+matplotlib>=3.7.0
+seaborn>=0.12.0
+plotly>=5.15.0
+kaleido>=0.2.1
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Document generation
+python-docx>=0.8.11
+reportlab>=4.0.0
+Pillow>=10.0.0
+
+# PDF generation with charts
+weasyprint>=59.0
+markdown2>=2.4.0
+
+# Data visualization utilities
+wordcloud>=1.9.0
+matplotlib-inline>=0.1.6 

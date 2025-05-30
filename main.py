@@ -5,6 +5,16 @@ import git
 from datetime import datetime
 from dotenv import load_dotenv
 
+# Import the new report visualizer
+try:
+    from report_visualizer import ReportVisualizer
+    VISUALIZER_AVAILABLE = True
+    print("✅ Report Visualizer loaded successfully")
+except ImportError as e:
+    VISUALIZER_AVAILABLE = False
+    print(f"⚠️ Report Visualizer not available: {e}")
+    print("   Install dependencies: pip install -r requirements.txt")
+
 # Constants
 NO_TASKS_COMPLETED_MESSAGE = "No tasks completed during this period."
 
@@ -1552,8 +1562,8 @@ def output_report_summary(args, business_analysis, tasks):
     for repo_name, stats in repo_totals.items():
         print(f"   • {repo_name}: {stats['commits']} commits across {stats['tasks']} tasks")
 
-def main():
-    # Parse command-line arguments
+def create_argument_parser():
+    """Create and configure the command-line argument parser"""
     parser = argparse.ArgumentParser(description="Generate a work report with AI summary.")
     parser.add_argument("--assignee", required=True, help="Jira assignee username")
     parser.add_argument("--start-date", required=True, help="Start date (YYYY-MM-DD)")
@@ -1565,37 +1575,144 @@ def main():
                         default='stakeholder',
                         help="Type of report to generate (default: stakeholder)")
     parser.add_argument("--format", 
-                        choices=['markdown', 'text'], 
+                        choices=['markdown', 'text', 'docx', 'pdf', 'all'], 
                         default='markdown',
-                        help="Output format (default: markdown)")
-    args = parser.parse_args()
+                        help="Output format (default: markdown). 'all' generates markdown, DOCX, and PDF")
+    parser.add_argument("--charts", action="store_true", 
+                        help="Generate professional charts and visualizations")
+    return parser
 
-    # Handle repository paths
+def initialize_and_validate_repos(args):
+    """Initialize and validate repository paths"""
     repo_paths = parse_repository_arguments(args)
     if not repo_paths:
-        return
+        return None
+    
+    validated_repos = validate_repositories(repo_paths)
+    if not validated_repos:
+        return None
+    
+    return validated_repos
 
-    # Validate repository paths
-    repo_paths = validate_repositories(repo_paths)
-    if not repo_paths:
-        return
+def process_all_formats(args, tasks, business_analysis, report, assignee_name):
+    """Handle format 'all' - generate all formats"""
+    print("🎨 Generating comprehensive report package...")
+    visualizer = ReportVisualizer()
+    
+    # Determine base filename
+    if args.output:
+        base_name = args.output.replace('.md', '').replace('.txt', '')
+    else:
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        base_name = f"{assignee_name.lower().replace(' ', '_')}_{timestamp}"
+    
+    # Generate reports with custom names
+    report_files = {}
+    
+    # Generate DOCX
+    docx_file = f"{base_name}.docx"
+    chart_files = visualizer.generate_all_charts(tasks, business_analysis)
+    docx_path = visualizer.create_docx_report(report, chart_files.copy(), docx_file)
+    report_files['docx'] = docx_path
+    
+    # Generate PDF
+    pdf_file = f"{base_name}.pdf"
+    pdf_path = visualizer.create_pdf_report(report, chart_files.copy(), pdf_file)
+    report_files['pdf'] = pdf_path
+    
+    # Save markdown version
+    markdown_file = f"{base_name}.md"
+    os.makedirs(os.path.dirname(markdown_file) if os.path.dirname(markdown_file) else ".", exist_ok=True)
+    with open(markdown_file, 'w') as f:
+        f.write(report)
+    
+    report_files['charts'] = chart_files
+    
+    print("\n📦 COMPLETE REPORT PACKAGE GENERATED:")
+    print(f"   📄 DOCX: {docx_path}")
+    print(f"   📑 PDF: {pdf_path}")
+    print(f"   📝 Markdown: {markdown_file}")
+    print(f"   📊 Charts: {len(chart_files)} visualizations")
 
-    # Initialize Jira client
-    jira = JIRA(server=os.getenv("JIRA_URL"), basic_auth=(os.getenv("JIRA_USERNAME"), os.getenv("JIRA_API_TOKEN")))
+def determine_output_filename(args, assignee_name):
+    """Determine the output filename based on arguments"""
+    if args.output:
+        output_file = args.output
+        # Ensure correct extension
+        if args.format == 'docx' and not output_file.endswith('.docx'):
+            output_file = output_file.replace('.md', '').replace('.txt', '') + '.docx'
+        elif args.format == 'pdf' and not output_file.endswith('.pdf'):
+            output_file = output_file.replace('.md', '').replace('.txt', '') + '.pdf'
+        return output_file
+    else:
+        # Fallback to timestamp-based naming
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        base_name = f"{assignee_name.lower().replace(' ', '_')}_{timestamp}"
+        if args.format == 'docx':
+            return f"{base_name}.docx"
+        elif args.format == 'pdf':
+            return f"{base_name}.pdf"
+        else:
+            return f"{base_name}.md"
 
-    # Fetch tasks from Jira
-    tasks = fetch_tasks(jira, args.assignee, args.start_date, args.end_date)
+def process_docx_format(visualizer, args, tasks, business_analysis, report, output_file):
+    """Process DOCX format generation"""
+    chart_files = visualizer.generate_all_charts(tasks, business_analysis) if args.charts else {}
+    docx_path = visualizer.create_docx_report(report, chart_files, os.path.basename(output_file))
+    print(f"✅ DOCX report generated: {docx_path}")
 
-    # Process commits for each task
-    process_task_commits(tasks, repo_paths, args.start_date, args.end_date)
+def process_pdf_format(visualizer, args, tasks, business_analysis, report, output_file):
+    """Process PDF format generation"""
+    chart_files = visualizer.generate_all_charts(tasks, business_analysis) if args.charts else {}
+    pdf_path = visualizer.create_pdf_report(report, chart_files, os.path.basename(output_file))
+    print(f"✅ PDF report generated: {pdf_path}")
 
-    # Analyze business impact
-    business_analysis = analyze_business_impact(tasks)
+def process_charts_only(visualizer, args, tasks, business_analysis, report):
+    """Process charts-only generation with markdown output"""
+    chart_files = visualizer.generate_all_charts(tasks, business_analysis)
+    print(f"✅ Generated {len(chart_files)} professional charts")
+    
+    # Output markdown report as well
+    if args.output:
+        with open(args.output, 'w') as f:
+            f.write(report)
+        print(f"📝 Markdown report saved to {args.output}")
+    else:
+        print(report)
 
-    # Generate report
-    report = generate_report_content(args, tasks, business_analysis, args.start_date, args.end_date)
+def process_single_format(args, tasks, business_analysis, report, assignee_name):
+    """Handle single format generation (docx, pdf, or charts)"""
+    visualizer = ReportVisualizer()
+    
+    # Determine output filename
+    output_file = determine_output_filename(args, assignee_name)
+    
+    # Process based on format
+    if args.format == 'docx':
+        process_docx_format(visualizer, args, tasks, business_analysis, report, output_file)
+    elif args.format == 'pdf':
+        process_pdf_format(visualizer, args, tasks, business_analysis, report, output_file)
+    elif args.charts:
+        process_charts_only(visualizer, args, tasks, business_analysis, report)
 
-    # Output the report
+def handle_advanced_formats(args, tasks, business_analysis, report, assignee_name):
+    """Handle advanced formats (docx, pdf, charts)"""
+    if not VISUALIZER_AVAILABLE:
+        print("⚠️ Advanced reporting features require additional dependencies.")
+        print("   Install with: pip install -r requirements.txt")
+        print("   Falling back to markdown format...")
+        args.format = 'markdown'
+        return False
+    
+    if args.format == 'all':
+        process_all_formats(args, tasks, business_analysis, report, assignee_name)
+    else:
+        process_single_format(args, tasks, business_analysis, report, assignee_name)
+    
+    return True
+
+def handle_standard_formats(args, report, business_analysis, tasks):
+    """Handle standard text/markdown formats"""
     if args.output:
         try:
             with open(args.output, 'w') as f:
@@ -1606,6 +1723,44 @@ def main():
             print(f"Error writing to file: {e}")
     else:
         print(report)
+
+def main():
+    """Main function for generating work reports"""
+    # Parse command-line arguments
+    args = create_argument_parser().parse_args()
+
+    # Initialize and validate repositories
+    repo_paths = initialize_and_validate_repos(args)
+    if not repo_paths:
+        return
+
+    # Initialize Jira client
+    jira = JIRA(server=os.getenv("JIRA_URL"), basic_auth=(os.getenv("JIRA_USERNAME"), os.getenv("JIRA_API_TOKEN")))
+
+    # Fetch and process data
+    tasks = fetch_tasks(jira, args.assignee, args.start_date, args.end_date)
+    process_task_commits(tasks, repo_paths, args.start_date, args.end_date)
+    business_analysis = analyze_business_impact(tasks)
+    
+    # Generate report content
+    report = generate_report_content(args, tasks, business_analysis, args.start_date, args.end_date)
+    assignee_name = get_assignee_name_from_tasks(tasks)
+
+    # Handle different output formats
+    advanced_formats = ['docx', 'pdf', 'all']
+    if args.format in advanced_formats or args.charts:
+        advanced_handled = handle_advanced_formats(args, tasks, business_analysis, report, assignee_name)
+        if not advanced_handled:
+            # Fallback to standard format
+            handle_standard_formats(args, report, business_analysis, tasks)
+    
+    # Handle standard formats
+    if args.format in ['markdown', 'text']:
+        handle_standard_formats(args, report, business_analysis, tasks)
+
+    # Always show summary for non-markdown outputs
+    if args.format not in ['markdown', 'text'] or args.charts:
+        output_report_summary(args, business_analysis, tasks)
 
 if __name__ == "__main__":
     main()
