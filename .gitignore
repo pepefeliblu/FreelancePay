@@ -1,2 +1,40 @@
-/.env
-/reports/
+# Environment variables (sensitive data)
+.env
+.env.local
+.env.production
+.env.staging
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Reports directory (generated content)
+reports/
+*.log
+
+# Temporary files
+*.tmp
+*.temp
